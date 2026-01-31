@@ -1,69 +1,73 @@
 ---
 name: dev-coding-practices
-description: Coding style and workflow preferences for application and library code. Use when writing, reviewing, or refactoring code in any programming language for production applications or libraries. Applies to all code unless user specifies testing, functional programming, or other specialized contexts.
+description: Functional-first coding style and workflow. Use when writing, reviewing, or refactoring production code.
 ---
 
 # Developer Coding Practices
 
-## Core Philosophy
+## Philosophy
 
-Write concise, functional-lite code that implements requirements directly and fails fast. Defer defensive patterns until explicitly needed.
+Functional-lite. Fail fast. Defer defense. Ship the meaningful change, abstract the rest.
+
+## Functional Style
+
+- **Declarative over imperative** — say what, not how
+- **Immutable by default** — mutate only for perf (1000s of objects)
+- **Pure functions** — separate data from functions that operate on it
+- **Segregate state** — isolate side-effects, avoid shared state
+- **Composition over inheritance** — curry, compose, pipe
+- **Unary functions** — general config first, specific data last
+- **Point-free when clean** — reduce temp variables, reduce surface area
+- **Recursion over loops** — but mind the tail-call stack
 
 ## Code Style
 
-- Prefer functional paradigm over OOP/class-based approaches
-- Write concise implementations without code comments or explanations
-- No defensive coding in first iterations - implement requirements and fail fast
-- Resolve data issues upstream at the source, not through defensive checks
-- Defer validation, error handling, logging, and metrics until requested
-- Add these concerns minimally and only as needed
+- Descriptive names, readable syntax — no abbreviations unless universal
+- Variables: follow language convention (camelCase JS/TS, snake_case Python)
+- Files/folders: kebab-case
+- No comments or explanations in code
+- No defensive coding in first iterations
+- Fix data issues upstream, not with defensive checks
+- Defer validation, error handling, logging, metrics until asked
+- Mention critical edge cases in chat; don't code them unsolicited
 
-## Language-Specific Rules
+## JS/TS Specifics
 
-### ECMA Languages (JavaScript/TypeScript)
+- `undefined` only, never `null`
 
-- Avoid `null`, only use `undefined`
+## Architecture
 
-## Data & Mutability
+**Orchestrator → Pipeline → Helpers**
 
-- Prefer immutability by default
-- Use mutable approaches only when performance issues are likely (thousands of objects or more)
-- Performance concerns typically relevant in: library code, data processing pipelines, high-volume workflows
+1. Main function: receives inputs, coordinates
+2. Data pipeline: transforms through helper chain
+3. Helpers: one logical chunk each, easily testable
 
-## Performance vs Readability
+Main can be long. Helpers stay focused. No arbitrary length rules.
 
-- **Application code**: Optimize for readability and dev speed
-- **Backend and library code**: Can be lower-level and optimize for performance when working with thousands of objects
+## Organization
 
-## Typing
+- Helpers live with orchestrator until 2-3+ accumulate
+- Extract testable logic: transforms, algorithms, pure business logic
+- Isolate side-effects
 
-- **Application code**: Rely on type inference where possible
-- **Library code**: Provide full typing as appropriate
+## App vs Library Code
 
-## Architecture Pattern
+| Concern | App Code | Library Code |
+|---------|----------|--------------|
+| Optimize for | Readability, dev speed | Performance |
+| Typing | Inference | Explicit |
+| Mutability | Immutable | Perf-justified |
 
-For moderate-sized features, organize code as:
+## Config
 
-1. **Main/orchestrating function**: Receives inputs, coordinates the workflow
-2. **Data pipeline**: Transform data through a series of helper functions
-3. **Helper functions**: Each performs one logical behavior chunk
-   - Functions with logic can be unit-tested easily
-   - Functions with side-effects are isolated
+- Constants → constants file
+- Config → config file
+- Validate config before runtime
 
-Main functions can be procedural and as long as needed. Helper functions should be focused and single-purpose. No fixed function length constraints.
+## Problem-Solving
 
-## Code Organization
-
-- Helper functions stay in the same file as the main/orchestrating function until there are 2-3+ helpers
-- Extract logic that will likely be tested: data transformations, testable algorithms, pure business logic
-- Keep side effects isolated for easier testing
-
-## Configuration and Constants
-
-- Hard-coded values belong in a constants file
-- Configuration belongs in a config file
-- Validate config before runtime to error on missing/invalid settings
-
-## Critical Cases
-
-When edge cases or error handling appear potentially critical, mention concerns in chat but don't write the code unless asked.
+1. Decompose: iterator, transform, state
+2. Patterns repeated 2-3x → make generic
+3. Custom parts reveal themselves
+4. 10x = show the change, hide the noise

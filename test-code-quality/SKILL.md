@@ -11,7 +11,7 @@ Tests are executable spec and documentation for future devs. Clarity beats DRY. 
 
 ## Code Style
 
-- Follow lightweight FP-inspired paradigm from general coding practices
+- Follow the `dev-coding-practices` skill (functional-first paradigm) for all test code
 - **DRY is negotiable** — repeat yourself if it aids understanding
 - A dev a year from now should see context without jumping between many files/helpers
 

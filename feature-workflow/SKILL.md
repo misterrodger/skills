@@ -1,6 +1,6 @@
 ---
 name: feature-workflow
-description: Default workflow for feature development. Use this skill when starting any new feature — it orchestrates all other skills through planning, building, and release.
+description: Default workflow for feature development. Use this skill when starting, building, implementing, or creating any new feature — it orchestrates all other skills through planning, building, and release.
 ---
 
 # Feature Workflow

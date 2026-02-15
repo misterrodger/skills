@@ -1,6 +1,6 @@
 ---
 name: dev-coding-practices
-description: Functional-first coding style and workflow. ALWAYS use when writing ANY code — application code, tests, scripts, data pipelines, utilities, or any other code artifacts.
+description: Functional-first coding style and workflow. ALWAYS apply when writing, editing, or generating ANY code — application code, tests, scripts, data pipelines, utilities, or any other code artifacts. Invoke this before producing any code output.
 ---
 
 # Developer Coding Practices

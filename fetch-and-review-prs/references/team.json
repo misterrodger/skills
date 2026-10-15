@@ -1,0 +1,146 @@
+{
+  "org": "Command-Cloud",
+  "reviewsRoot": "/Users/jrodger/Github/pr-reviews",
+  "planningRoot": "/Users/jrodger/Github/planning",
+  "commandAlkonHome": "/Users/jrodger/Github/Command_Alkon",
+  "jiraCloudId": "1ff93ef9-32e7-4029-95d2-fcc1ff4694b8",
+  "principal": {
+    "name": "John Rodger",
+    "login": "jdrodger_cmd"
+  },
+  "pods": [
+    {
+      "id": "pod-19",
+      "name": "Sales and Quoting, and Pricing",
+      "priority": "primary",
+      "note": "Primary responsibility. Seniors get a full review by default."
+    },
+    {
+      "id": "pod-15",
+      "name": "Scale Ticketing",
+      "priority": "secondary",
+      "note": "Lower priority. Isis Salamanca is the senior and gets a full review by default; other developers default to triage."
+    },
+    {
+      "id": "peer",
+      "name": "Peer",
+      "priority": "peer",
+      "note": "Same timezone. Full review alongside Pod 19 seniors."
+    }
+  ],
+  "summaryOrder": ["pod-19", "peer", "pod-15"],
+  "defaultAuthors": [
+    {
+      "name": "Fabian Martinez",
+      "login": "fmartinez_cmd",
+      "aliases": ["fabian", "fabian martinez", "fmartinez_cmd"],
+      "pod": "pod-19",
+      "role": "senior",
+      "reviewDepth": "full",
+      "jiraAccountId": "712020:28d3e2bf-b617-4b56-aa33-ef7fd7fd0a0b"
+    },
+    {
+      "name": "Sebastian Vasquez",
+      "login": "svasquez_cmd",
+      "aliases": ["sebastian", "sebastian vasquez", "sebastian vásquez", "svasquez_cmd"],
+      "pod": "pod-19",
+      "role": "senior",
+      "reviewDepth": "full",
+      "jiraAccountId": "712020:446499e1-583b-4d7f-ab74-7fd410406a7d"
+    },
+    {
+      "name": "Juan Pablo Betancourt",
+      "login": "jpbetancourt_cmd",
+      "aliases": ["juan pablo", "juan pablo betancourt", "jp", "jpbetancourt_cmd"],
+      "pod": "pod-19",
+      "role": "senior",
+      "reviewDepth": "full",
+      "jiraAccountId": "712020:b6cd9b51-3fbe-4a39-a29b-49ad0c1477a8"
+    },
+    {
+      "name": "Andres Uribe",
+      "login": "auribe_cmd",
+      "aliases": ["andres", "andrés", "andres uribe", "andrés uribe", "auribe_cmd"],
+      "pod": "pod-19",
+      "role": "senior",
+      "reviewDepth": "full",
+      "jiraAccountId": "712020:b49140b4-a30b-4b08-8282-c2aaba5254a3"
+    },
+    {
+      "name": "Marcos Aguilera",
+      "login": "marcosaguilera-glob_cmd",
+      "aliases": ["marcos", "marcos aguilera", "marcosaguilera-glob_cmd"],
+      "pod": "pod-19",
+      "role": "developer",
+      "reviewDepth": "triage"
+    },
+    {
+      "name": "Chad Lott",
+      "login": "CLott_cmd",
+      "aliases": ["chad", "chad lott", "clott", "clott_cmd", "CLott_cmd"],
+      "pod": "pod-19",
+      "role": "developer",
+      "reviewDepth": "triage"
+    },
+    {
+      "name": "Vladimir Koshcheyev",
+      "login": "vkoshcheyev_cmd",
+      "aliases": ["vladimir", "vladimir koshcheyev", "vlad", "vkoshcheyev_cmd"],
+      "pod": "pod-19",
+      "role": "developer",
+      "reviewDepth": "triage"
+    },
+    {
+      "name": "Isis Salamanca",
+      "login": "isalamanca_cmd",
+      "aliases": ["isis", "isis salamanca", "isalamanca_cmd"],
+      "pod": "pod-15",
+      "role": "senior",
+      "reviewDepth": "full",
+      "jiraAccountId": "712020:2351415f-c332-4d0c-bbee-ecc326013fb2"
+    },
+    {
+      "name": "Juan David Varela",
+      "login": "juanvarela-glob_cmd",
+      "aliases": ["juan", "juan varela", "juan david", "juan david varela", "varela", "juanvarela-glob_cmd"],
+      "pod": "pod-15",
+      "role": "developer",
+      "reviewDepth": "triage"
+    },
+    {
+      "name": "Francisco de Freitas",
+      "login": "fdefreitas-glob_cmd",
+      "aliases": ["francisco", "francisco de freitas", "francisco defreitas", "freitas", "fdefreitas-glob_cmd"],
+      "pod": "pod-15",
+      "role": "developer",
+      "reviewDepth": "triage"
+    },
+    {
+      "name": "Edwar Figueroa",
+      "login": "edwarfigueroa-glob_cmd",
+      "aliases": ["edwar", "edwar figueroa", "edwarfigueroa-glob_cmd"],
+      "pod": "pod-15",
+      "role": "developer",
+      "reviewDepth": "triage"
+    },
+    {
+      "name": "Jonathan Harrison",
+      "login": "jjharrison_cmd",
+      "aliases": ["jonathan", "jonathan harrison", "jjharrison_cmd"],
+      "pod": "peer",
+      "role": "peer",
+      "reviewDepth": "full"
+    }
+  ],
+  "thresholds": {
+    "veryStaleOpenDays": 14,
+    "staleOpenDays": 7,
+    "staleUpdateDays": 5,
+    "strictNudgeCooldownHours": 24,
+    "largeNonI18nFiles": 25,
+    "largeNonI18nLines": 800,
+    "spotCheckIntervalDays": 7,
+    "maxSpotChecksPerAuthorPerRun": 1
+  },
+  "strictPassphrase": "strict-nudge"
+}

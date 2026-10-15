@@ -1,0 +1,27 @@
+{
+  "org": "Command-Cloud",
+  "repos": [
+    "cds-driver-management-exp",
+    "cds-dispatch-service",
+    "cds-resource-scheduler",
+    "cds-setup-service",
+    "cds-company-admin",
+    "cds-dispatch-exp",
+    "cds-waste-compliance-utils",
+    "cds-waste-compliance-service",
+    "cds-waste-compliance-exp"
+  ],
+  "developers": {
+    "jrodger": "jdrodger_cmd",
+    "lucy potter": "lpotter_cmd",
+    "anuj": "anujyadav-gl_cmd",
+    "sneha": "skooranchi-gl_cmd",
+    "jason forest": "jjforest_cmd"
+  },
+  "exclude_logins": [
+    "commandcloudversionupdatorapp[bot]",
+    "github-actions[bot]"
+  ],
+  "stale_open_days": 21,
+  "stale_update_days": 14
+}

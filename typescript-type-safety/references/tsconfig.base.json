@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "_comment": "Strict base. Extend per package: set lib/jsx/module to match the runtime (see notes at bottom).",
+  "compilerOptions": {
+    // --- Type-checking strictness -------------------------------------------
+    "strict": true, // noImplicitAny, strictNullChecks, strictFunctionTypes, useUnknownInCatchVariables, etc.
+    "noUncheckedIndexedAccess": true, // arr[i] / obj[key] is T | undefined — catches the classic empty-array bug
+    "exactOptionalPropertyTypes": true, // `key?: T` means "absent", not "present and undefined"
+    "noImplicitOverride": true, // class overrides must say `override`
+    "noImplicitReturns": true, // every code path returns
+    "noFallthroughCasesInSwitch": true, // pairs with exhaustiveness checking
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noPropertyAccessFromIndexSignature": true, // force obj["dynamic"] vs obj.known
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+
+    // --- Modules / interop --------------------------------------------------
+    "module": "NodeNext", // Vite/bundler projects: use "ESNext"
+    "moduleResolution": "NodeNext", // Vite/bundler projects: use "Bundler"
+    "target": "ES2022",
+    "lib": ["ES2022"], // browser/React: add "DOM", "DOM.Iterable"
+    "verbatimModuleSyntax": true, // forces `import type` for type-only imports; no surprise elision
+    "isolatedModules": true, // safe for single-file transpilers (esbuild/swc)
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // --- Emit ---------------------------------------------------------------
+    "declaration": true, // emit .d.ts (essential for library code)
+    "declarationMap": true,
+    "sourceMap": true,
+    "skipLibCheck": true // pragmatic: don't type-check node_modules .d.ts
+  }
+}

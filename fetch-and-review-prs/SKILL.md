@@ -22,9 +22,10 @@ Orchestrates approval-gated team PR triage and review into `/Users/jrodger/Githu
 3. [`references/readiness.md`](references/readiness.md)
 4. [`references/escalation.md`](references/escalation.md)
 5. [`references/senior-tag.md`](references/senior-tag.md)
-6. [`references/deferred-senior-triage.md`](references/deferred-senior-triage.md)
-7. [`references/strict-mode.md`](references/strict-mode.md)
-8. [`references/review-output-template.md`](references/review-output-template.md)
+6. [`references/flagged-approved.md`](references/flagged-approved.md)
+7. [`references/deferred-senior-triage.md`](references/deferred-senior-triage.md)
+8. [`references/strict-mode.md`](references/strict-mode.md)
+9. [`references/review-output-template.md`](references/review-output-template.md)
 
 ## Paths
 
@@ -79,36 +80,42 @@ bash ~/.claude/skills/fetch-and-review-prs/scripts/pr-readiness.sh OWNER/REPO NU
 
 Merge into `state/prs/<owner>__<repo>__<n>.json`. Preserve `lastDeepReviewAt`, `lastDeepReviewSha`, `lastSpotCheckAt`, `lastSpotCheckSha`, `lastStrictNudgeAt`, `lastSeniorTagAt`, and `seniorTagFingerprint`.
 
-Bucket with `readiness.md`. i18n-only PRs go to the deferred-i18n section, not the review buckets.
+Bucket with `readiness.md`. i18n-only PRs go to the deferred-i18n section, not the review buckets. PRs with `flaggedOrApproved` true go to the Flagged/Approved section, not any review bucket.
 
-### 5. Nudges
+### 5. Flagged / approved PRs
 
-Copy `nudges` into the chat summary and the day's **Proposed nudges** section. Drop drafts and i18n-only PRs. Do not post them in triage/proposal mode. In execution mode, post only the explicitly selected, revalidated nudges. Follow `strict-mode.md` for the body, cooldown, and state update.
+Follow `flagged-approved.md`. Any PR with `flaggedOrApproved` true (GitHub label `flagged` or `approved`) is pulled out here, before nudges, senior tags, clustering, or escalation run. List it once in the day's **Flagged / Approved** section (author, PR, Jira key if present, matched label(s)) and skip it entirely in steps 6–10.
 
-### 6. Senior tags
+### 6. Nudges
 
-Follow `senior-tag.md` for triage authors. Add matches to **Proposed senior mentions**; do not post them in triage/proposal mode. In execution mode, post only explicitly selected, revalidated mentions. Skip the mention when `principal.login` is already in `approvals.logins`.
+Copy `nudges` into the chat summary and the day's **Proposed nudges** section. Drop drafts, i18n-only PRs, and flagged/approved PRs (their `nudges` array is already empty). Do not post them in triage/proposal mode. In execution mode, post only the explicitly selected, revalidated nudges. Follow `strict-mode.md` for the body, cooldown, and state update.
 
-### 7. Cluster by Jira key
+### 7. Senior tags
 
-Extract `[A-Z][A-Z0-9]+-[0-9]+` from title, body, and branch. Same key → one cluster file. No key → `no-ticket__<repo>__pr-<n>.md`. A key on PRs in more than one repository adds the `multi-repo` reason.
+Follow `senior-tag.md` for triage authors. Add matches to **Proposed senior mentions**; do not post them in triage/proposal mode. In execution mode, post only explicitly selected, revalidated mentions. Skip the mention when `principal.login` is already in `approvals.logins` or the PR is flagged/approved.
 
-### 8. Escalate, skim, spot-check
+### 8. Cluster by Jira key
+
+Extract `[A-Z][A-Z0-9]+-[0-9]+` from title, body, and branch. Same key → one cluster file. No key → `no-ticket__<repo>__pr-<n>.md`. A key on PRs in more than one repository adds the `multi-repo` reason. Flagged/approved PRs are not clustered.
+
+### 9. Escalate, skim, spot-check
 
 Follow `escalation.md`.
 
+- Flagged/approved: out of scope entirely, see step 5. Not skimmed, spot-checked, or escalated.
 - i18n-only: deferred section only, plus a proposed senior mention when that gate matches.
 - Triage PR with an escalation reason: skim paths, excerpts, commit messages, and Bugbot text. Propose a full review when the skim is still material. Otherwise `watch`.
 - Quiet triage PR due for a spot-check: propose at most one full review per author, labeled spot-check.
 - `check resolved` stays in the local summary whenever `prematureResolve` is true.
 
-### 9. Proposed reviews
+### 10. Proposed reviews
 
-- Add full-depth candidates, confirmed escalations, and due spot-checks to **Proposed full reviews** with the reason for each recommendation.
+- Add full-depth candidates, confirmed escalations, and due spot-checks to **Proposed full reviews** with the reason for each recommendation. This section is reported first, ahead of nudges and senior mentions.
 - Do not fetch the branch diff or run review skills in triage/proposal mode.
 - If a candidate has an unchanged `headSha`, defer the Jira acceptance-criteria freshness check until John selects it.
+- Never add a flagged/approved PR here.
 
-### 10. Execute selected full reviews
+### 11. Execute selected full reviews
 
 For each explicitly selected review, refresh readiness and Jira context first. Continue only when the review is new or `headSha` or Jira acceptance criteria changed:
 
@@ -122,9 +129,9 @@ For each explicitly selected review, refresh readiness and Jira context first. C
 
 When nothing new changed, refresh the Readiness section of the existing cluster note.
 
-### 11. Finish
+### 12. Finish
 
-Update INDEX links. In proposal mode, lead with proposed nudges, proposed senior mentions, and proposed full reviews. In execution mode, lead with actions actually completed and list any selected actions skipped after revalidation. Then report deferred i18n, watch signals, ready / blocked / very stale counts, and paths written.
+Update INDEX links. In proposal mode, lead with **proposed full reviews** first, then proposed nudges, then proposed senior mentions. In execution mode, lead with actions actually completed and list any selected actions skipped after revalidation. Then report flagged/approved, deferred i18n, escalations (omit any PR already listed under proposed full reviews — no duplicates), watch signals, ready / blocked / very stale counts, and paths written.
 
 ## Initial / triage-only runs
 
@@ -138,6 +145,7 @@ If John asks for a first pass or to close stale PRs, prioritize readiness, propo
 - Cluster markdown only for explicitly selected full reviews
 - `pr-reviews/state/prs/*.json`
 - Optional context under `pr-reviews/context/`
+- Proposed full-review list, reported first; review only when explicitly selected
 - Proposed GitHub nudge comments; post only when explicitly selected
 - Proposed GitHub senior mentions; post only when explicitly selected
-- Proposed full-review list; review only when explicitly selected
+- Flagged/Approved list (GitHub label `flagged` or `approved`); informational only, never reviewed

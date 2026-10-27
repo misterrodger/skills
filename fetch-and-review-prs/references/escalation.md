@@ -2,6 +2,10 @@
 
 `scripts/pr-readiness.sh` records the cheap signals. Use them before reading a patch.
 
+## Ignore flagged/approved PRs
+
+A PR with `flaggedOrApproved` true (GitHub label `flagged` or `approved`) is never skimmed, spot-checked, or escalated; `escalation.recommend`/`reasons` are already zeroed by `scripts/pr-readiness.sh`. Record it in the day's Flagged/Approved section instead. See `flagged-approved.md`.
+
 ## Ignore i18n volume
 
 `files.i18nOnly` means every changed file is a translation or locale resource. Leave that PR out of full review, spot-check, escalation, and the nudge list, including when a senior wrote it. Record it in the day's deferred-i18n section. See `deferred-senior-triage.md`.

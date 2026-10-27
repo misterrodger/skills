@@ -20,13 +20,17 @@ Team PR triage + deep review into `~/Github/pr-reviews/`.
 
 A default pass proposes full reviews when due; it does not read diffs. An explicitly selected full review is repeated when the latest commit or the Jira acceptance criteria change. An unchanged diff is not re-read.
 
-Triage PRs get readiness, proposed short nudge labels, and cheap file, comment, and Bugbot signals. A full review is proposed when a skim confirms the signal or a 7-day spot-check is due, and runs only when John selects it. i18n-only PRs are listed and left for a later Senior/Lead triage skill.
+Triage PRs get readiness, proposed short nudge labels, and cheap file, comment, and Bugbot signals. A full review is proposed when a skim confirms the signal or a 7-day spot-check is due, and runs only when John selects it. i18n-only PRs are listed and left for a later Senior/Lead triage skill. A merge conflict confined to documentation files (a `docs/` path, `.md`/`.mdx`, README/CHANGELOG/CONTRIBUTING/LICENSE — e.g. a feature map) does not get a `conflicts` nudge; a developer can resolve that trivially and it shouldn't block a review.
 
 A triage PR that is green, has no approval from a senior on its pod, and has no approval from `principal.login` gets a proposed GitHub comment mentioning those seniors. Skip that proposal when the principal has already approved. Nudge labels and senior mentions are posted only after explicit approval, never on the Jira ticket.
+
+A PR carrying the GitHub label `flagged` or `approved` (either or both) is skipped entirely — no nudge, no senior mention, no skim/escalation/spot-check, no full review — and is only listed in a dedicated Flagged/Approved section.
 
 Sulakshana's authored PRs are listed only from `cds-bulk-materials-service`, `cds-bulk-materials-exp`, `cds-bm-yard`, and `connex-asphalt-node-v4`. Her approvals satisfy the Pod 15 senior gate in every repository.
 
 ## What you get
+
+Output sections are reported with **Proposed full reviews first**, then proposed nudges and senior mentions. A PR already listed under Proposed full reviews is not repeated under Escalations.
 
 | Artifact | Updated |
 |----------|---------|
@@ -34,9 +38,10 @@ Sulakshana's authored PRs are listed only from `cds-bulk-materials-service`, `cd
 | `pr-reviews/YYYY-MM-DD/readiness.md` | Every run |
 | Cluster `*.md` | When a selected full review runs |
 | `state/prs/*.json` | Every run |
+| Proposed full reviews | When full-depth, escalation, or spot-check criteria match — reported first |
 | Proposed nudge list | Every run, when a PR has nudge labels |
 | Proposed senior mentions | When a ready triage PR has no senior or principal approval |
-| Proposed full reviews | When full-depth, escalation, or spot-check criteria match |
+| Flagged/Approved list | When a PR carries the GitHub label `flagged` or `approved`; informational only |
 | GitHub comments / deep reviews | Only after explicit selection |
 
 ## Related skills

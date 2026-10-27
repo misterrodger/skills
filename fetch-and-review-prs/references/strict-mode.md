@@ -15,7 +15,7 @@ Use only these, comma-separated, in this order:
 
 A missing approval is not a label. When a triage PR is ready, no pod senior has approved it, and `principal.login` has not approved it, `senior-tag.md` proposes a separate senior mention.
 
-`scripts/pr-readiness.sh` puts the matching labels on `nudges`. Drop nudges for drafts and for `files.i18nOnly` PRs. `check resolved` is not a GitHub label. It stays in the local summary when `reviewThreads.prematureResolve` is true.
+`scripts/pr-readiness.sh` puts the matching labels on `nudges`. Drop nudges for drafts and for `files.i18nOnly` PRs. The script also skips `conflicts` when `files.docsOnly` is true — every changed file is documentation (a `docs/` path, `.md`/`.mdx`, or a README/CHANGELOG/CONTRIBUTING/LICENSE file, e.g. a feature map) — because a docs-only conflict is trivial for the author to resolve and should not block or nudge. A mixed PR (docs plus code) still nudges normally. Drop all nudges for a PR whose `flaggedOrApproved` is true; see `flagged-approved.md`. `check resolved` is not a GitHub label. It stays in the local summary when `reviewThreads.prematureResolve` is true.
 
 Posted body is the labels only, for example `red pipeline, unresolved comments`.
 

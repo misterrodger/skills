@@ -49,6 +49,10 @@ Resolved threads can still be present. List `check resolved` beside the row when
 
 Any of: CI red/pending, unresolved threads > 0, zero non-author approvals, merge conflicts.
 
+## Flagged / approved (out of scope)
+
+`flaggedOrApproved` true (GitHub label `flagged` or `approved`) takes a PR out of every other bucket and signal — no nudge, no senior mention, no escalation/skim/spot-check, no full review. List it once in the day's Flagged/Approved section instead. See `flagged-approved.md`.
+
 ## Very stale / stale watch
 
 From `references/team.json` thresholds (`veryStaleOpenDays`, `staleOpenDays`, `staleUpdateDays`).

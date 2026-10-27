@@ -14,6 +14,7 @@ All of:
 - `changesRequested` is 0
 - no `approvals.logins` entry is a senior `login` from the author's pod
 - no `approvals.logins` entry is `principal.login` from `team.json`
+- `flaggedOrApproved` is false — a PR labeled `flagged` or `approved` on GitHub never gets a senior mention; see `flagged-approved.md`
 
 An approval from `principal.login` suppresses the senior mention the same way a pod-senior approval does. Do not ask the pod seniors to review a PR the principal has already approved.
 

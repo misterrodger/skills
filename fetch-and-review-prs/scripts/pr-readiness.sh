@@ -19,7 +19,7 @@ fi
 
 team_json="$(cd "$(dirname "$0")/../references" && pwd)/team.json"
 
-pr_json="$(gh pr view "$pr" --repo "$repo" --json number,title,url,author,isDraft,createdAt,updatedAt,headRefOid,baseRefName,mergeable,mergeStateStatus,reviewDecision,reviews,latestReviews,additions,deletions,changedFiles,files,commits 2>/dev/null || true)"
+pr_json="$(gh pr view "$pr" --repo "$repo" --json number,title,url,author,isDraft,createdAt,updatedAt,headRefOid,baseRefName,mergeable,mergeStateStatus,reviewDecision,reviews,latestReviews,additions,deletions,changedFiles,files,commits,labels 2>/dev/null || true)"
 if [[ -z "$pr_json" ]]; then
   jq -n --arg repo "$repo" --argjson pr "$pr" '{repo:$repo,number:$pr,error:"pr_view_failed"}'
   exit 0
@@ -79,6 +79,11 @@ jq -n \
     | test("/i18n/|/locales?/|/l10n/|/translations?/|/lang/")
       or test("\\.(po|xliff|xlf)$")
       or test("(^|/)(en|es|fr|pt|de|nl|it|pl|sv|da|fi|nb|ja|zh|ko)(-[a-z]{2})?\\.(json|ya?ml)$");
+  def is_doc:
+    ascii_downcase
+    | test("(^|/)docs/")
+      or test("\\.mdx?$")
+      or test("(^|/)(readme|changelog|contributing|license)(\\.[a-z0-9]+)?$");
   def hot_groups($path):
     [
       (if ($path | test("openapi|swagger|\\.graphql|/(api|schema)/|schema\\.(json|ya?ml|ts)$"; "i")) then "api-schema" else empty end),
@@ -130,6 +135,9 @@ jq -n \
   | (($codeFiles | map((.additions // 0) + (.deletions // 0)) | add) // 0) as $codeLines
   | ([$codeFiles[].path | hot_groups(.)[]] | unique) as $hot
   | ((files | length) > 0 and ($codeFiles | length) == 0) as $i18nOnly
+  | ((files | length) > 0 and (files | map(select(((.path // "") | is_doc) | not)) | length) == 0) as $docsOnly
+  | ([($pr.labels // [])[].name]) as $labelNames
+  | (($labelNames | map(ascii_downcase)) | any(. == "flagged" or . == "approved")) as $flaggedOrApproved
   | {
       count: [latest[] | select(.state == "APPROVED" and .author.login != $author)] | length,
       logins: [latest[] | select(.state == "APPROVED" and .author.login != $author) | .author.login] | unique,
@@ -149,7 +157,7 @@ jq -n \
        [
          (if $ciStatus == "red" then "red pipeline" else empty end),
          (if $ciStatus == "pending" then "pending pipeline" else empty end),
-         (if ($pr.mergeable == "CONFLICTING" or $pr.mergeStateStatus == "DIRTY") then "conflicts" else empty end),
+         (if (($pr.mergeable == "CONFLICTING" or $pr.mergeStateStatus == "DIRTY") and ($docsOnly | not)) then "conflicts" else empty end),
          (if ([$threadRows[] | select(.resolved | not)] | length) > 0 then "unresolved comments" else empty end),
          (if $approvals.changesRequested > 0 then "changes requested" else empty end),
          (if ($openDays >= $thresholds.staleOpenDays or $quietDays >= $thresholds.staleUpdateDays) then "stale" else empty end)
@@ -179,6 +187,8 @@ jq -n \
       additions: $pr.additions,
       deletions: $pr.deletions,
       changedFiles: $pr.changedFiles,
+      labels: $labelNames,
+      flaggedOrApproved: $flaggedOrApproved,
       openDays: $openDays,
       quietDays: $quietDays,
       ci: { status: $ciStatus, detail: $ciDetail },
@@ -203,6 +213,7 @@ jq -n \
       },
       files: {
         i18nOnly: $i18nOnly,
+        docsOnly: $docsOnly,
         i18nCount: ($localeFiles | length),
         nonI18nCount: ($codeFiles | length),
         nonI18nLines: $codeLines,
@@ -211,10 +222,10 @@ jq -n \
       },
       commitCount: (($pr.commits // []) | length),
       commitMessages: [($pr.commits // [])[].messageHeadline] | .[0:12],
-      nudges: $nudges,
+      nudges: (if $flaggedOrApproved then [] else $nudges end),
       escalation: {
-        recommend: (($reasons | length) > 0),
-        reasons: $reasons
+        recommend: (if $flaggedOrApproved then false else (($reasons | length) > 0) end),
+        reasons: (if $flaggedOrApproved then [] else $reasons end)
       },
       fetchedAt: $fetchedAt
     }

@@ -23,9 +23,9 @@
 
 Refresh when page `version` > cached version, or cache missing.
 
-## PR deep review
+## Approved PR deep review
 
-Deep-rewrite cluster MD when any of:
+Do not fetch a full diff or deep-rewrite cluster Markdown during proposal mode. After John selects a review, refresh readiness and Jira context, then deep-rewrite cluster MD when any of:
 
 - No prior `lastDeepReviewSha` for that PR
 - Current `headSha` ≠ `lastDeepReviewSha`
@@ -33,6 +33,8 @@ Deep-rewrite cluster MD when any of:
 
 Otherwise carry forward prior cluster MD and refresh only the Readiness section.
 
-## Strict nudge fingerprint
+Set `lastDeepReviewAt`, `lastDeepReviewSha`, `lastSpotCheckAt`, and `lastSpotCheckSha` only after the corresponding selected review completes.
 
-Skip re-nudge within `strictNudgeCooldownHours` if the posted label fingerprint is unchanged since `lastStrictNudgeAt`.
+## Approved comment fingerprints
+
+Before an approved nudge or senior mention, refresh readiness and recheck its gate. Skip re-nudge within `strictNudgeCooldownHours` if the posted label fingerprint is unchanged since `lastStrictNudgeAt`. Apply the equivalent senior-tag check to `lastSeniorTagAt` and `seniorTagFingerprint`. Proposals do not update these fields.

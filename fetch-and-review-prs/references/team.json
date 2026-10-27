@@ -19,7 +19,7 @@
       "id": "pod-15",
       "name": "Scale Ticketing",
       "priority": "secondary",
-      "note": "Lower priority. Isis Salamanca is the senior and gets a full review by default; other developers default to triage."
+      "note": "Lower priority. Isis Salamanca and Sulakshana Sawsarikar are the seniors and get full-depth proposals; Sulakshana's authored PRs are limited to the configured bulk-materials-owned repositories. Other developers default to triage."
     },
     {
       "id": "peer",
@@ -98,6 +98,20 @@
       "role": "senior",
       "reviewDepth": "full",
       "jiraAccountId": "712020:2351415f-c332-4d0c-bbee-ecc326013fb2"
+    },
+    {
+      "name": "Sulakshana Sawsarikar",
+      "login": "sawsarikar_cmd",
+      "aliases": ["sulakshana", "sulakshana sawsarikar", "sawsarikar", "sawsarikar_cmd"],
+      "pod": "pod-15",
+      "role": "senior",
+      "reviewDepth": "full",
+      "repoScope": [
+        "Command-Cloud/cds-bulk-materials-service",
+        "Command-Cloud/cds-bulk-materials-exp",
+        "Command-Cloud/cds-bm-yard",
+        "Command-Cloud/connex-asphalt-node-v4"
+      ]
     },
     {
       "name": "Juan David Varela",

@@ -1,18 +1,19 @@
 ---
 name: fetch-and-review-prs
-description: Fetch open PRs for John's pods, triage CI, resolved and unresolved comments, and file signals, and deep-review seniors plus escalated or spot-checked PRs. Post nudge labels on the GitHub PR. Mention pod seniors on the GitHub PR when a triage PR is ready without a senior or principal approval. i18n-only PRs are deferred. Use for a daily PR pass, named authors, or strict-nudge.
+description: Fetch open PRs for John's pods, triage CI, comments, and file signals, then propose nudge comments, senior mentions, and full reviews without posting or reviewing by default. Execute only the actions John explicitly selects in a follow-up request. i18n-only PRs are deferred. Use for a daily PR pass, named authors, review requests, or approved nudge and senior-tag actions.
 ---
 
 # Fetch and Review PRs
 
-Orchestrates team PR triage and deep review into `/Users/jrodger/Github/pr-reviews/`.
+Orchestrates approval-gated team PR triage and review into `/Users/jrodger/Github/pr-reviews/`.
 
 ## When to Use
 
 - Daily / multi-daily team PR pass (`/fetch-and-review-prs`)
-- “Review PRs from …” (override authors)
+- “Review PRs from …” or “review PR …” (explicit review authorization)
+- “Post these nudges” or “tag seniors on …” (explicit GitHub comment authorization)
 - Stale PR close triage
-- `strict-nudge` is the same GitHub post as a normal run; it is not a separate approval step
+- `strict-nudge` only proposes comments unless the request explicitly says to post them
 
 ## Load first
 
@@ -40,20 +41,23 @@ Orchestrates team PR triage and deep review into `/Users/jrodger/Github/pr-revie
 - Default: all `defaultAuthors` in `team.json`.
 - Extra names/logins: **additive** unless the user says only/just those people.
 - Match aliases case-insensitively to `login`.
-- `reviewDepth` `full`: readiness, plus a full review when the latest commit or the Jira acceptance criteria changed, or the PR was never reviewed.
-- `reviewDepth` `triage`: readiness, nudges, and cheap signals. Full review only when a skim confirms an escalation, a spot-check is due, or John asks.
+- After listing PRs, restrict an author's rows to `repoScope` when that field is present. The scope limits authored PRs only; the author's approvals still count wherever the pod-senior gate applies.
+- `reviewDepth` `full`: readiness plus a proposed full review when the latest commit changed or the PR was never reviewed. Recheck Jira acceptance criteria before an approved review.
+- `reviewDepth` `triage`: readiness, proposed nudges, and cheap signals. Propose a full review when a skim confirms an escalation or a spot-check is due.
 - Summarize in `summaryOrder`. Within a pod, seniors first.
-- Full by default: Pod 19 seniors, Isis Salamanca, and Jonathan Harrison.
+- Full-depth proposal group: Pod 19 seniors, Pod 15 seniors Isis Salamanca and Sulakshana Sawsarikar, and Jonathan Harrison.
 - Triage by default: Marcos Aguilera, Chad Lott, Vladimir Koshcheyev, Juan David Varela, Francisco de Freitas, and Edwar Figueroa.
 
-A full review reads the branch diff. Skip that read when `headSha` still equals `lastDeepReviewSha` and the Jira acceptance criteria are unchanged. Refresh readiness only and keep the previous cluster note.
+A full review reads the branch diff only after John explicitly requests that review. Skip that read when `headSha` still equals `lastDeepReviewSha` and the Jira acceptance criteria are unchanged. Refresh readiness only and keep the previous cluster note.
 
 ## Workflow (every run)
 
 ### 1. Resolve mode
 
-- Every run: write local files, post nudge labels on the GitHub PR, and mention pod seniors on that PR when `senior-tag.md` says so. Do not comment on Jira for either action.
-- `strict-nudge` / “make it strict” / “strict mode” posts the same GitHub comments. Follow `strict-mode.md`.
+- **Triage/proposal mode is the default.** Write local files and report proposed nudges, senior mentions, and full reviews. Do not post GitHub comments, fetch full diffs, or run the review skill stack.
+- **Execution mode requires explicit action and scope.** Requests such as “post these nudges,” “post the proposed senior mentions,” or “review PR 123” authorize only the selected actions. Do not infer approval for the other queues.
+- Before an approved action, rerun readiness for each selected PR. Drop or update actions whose current state no longer matches. Follow `strict-mode.md`, `senior-tag.md`, and the review freshness checks.
+- Never comment on Jira as part of a nudge or senior mention.
 
 ### 2. List open PRs
 
@@ -79,11 +83,11 @@ Bucket with `readiness.md`. i18n-only PRs go to the deferred-i18n section, not t
 
 ### 5. Nudges
 
-Copy `nudges` into the chat summary and the day's **Nudges** section. Drop drafts and i18n-only PRs. Post each remaining nudge on that GitHub PR. Follow `strict-mode.md` for the body and the cooldown.
+Copy `nudges` into the chat summary and the day's **Proposed nudges** section. Drop drafts and i18n-only PRs. Do not post them in triage/proposal mode. In execution mode, post only the explicitly selected, revalidated nudges. Follow `strict-mode.md` for the body, cooldown, and state update.
 
 ### 6. Senior tags
 
-Follow `senior-tag.md` for triage authors. Mention the pod seniors on the GitHub PR when the gate matches and the cooldown allows. Skip the mention when `principal.login` is already in `approvals.logins`. Do not comment on Jira. Report posts and cooldown skips in **Senior tagged**.
+Follow `senior-tag.md` for triage authors. Add matches to **Proposed senior mentions**; do not post them in triage/proposal mode. In execution mode, post only explicitly selected, revalidated mentions. Skip the mention when `principal.login` is already in `approvals.logins`.
 
 ### 7. Cluster by Jira key
 
@@ -93,14 +97,20 @@ Extract `[A-Z][A-Z0-9]+-[0-9]+` from title, body, and branch. Same key → one c
 
 Follow `escalation.md`.
 
-- i18n-only: deferred section only, plus a senior tag when that gate matches.
-- Triage PR with an escalation reason: skim paths, excerpts, commit messages, and Bugbot text. Full review only when the skim is still material. Otherwise `watch`.
-- Quiet triage PR due for a spot-check: one full review per author, labeled spot-check.
+- i18n-only: deferred section only, plus a proposed senior mention when that gate matches.
+- Triage PR with an escalation reason: skim paths, excerpts, commit messages, and Bugbot text. Propose a full review when the skim is still material. Otherwise `watch`.
+- Quiet triage PR due for a spot-check: propose at most one full review per author, labeled spot-check.
 - `check resolved` stays in the local summary whenever `prematureResolve` is true.
 
-### 9. Context and full review
+### 9. Proposed reviews
 
-For a full review that is new or whose `headSha` or Jira acceptance criteria changed:
+- Add full-depth candidates, confirmed escalations, and due spot-checks to **Proposed full reviews** with the reason for each recommendation.
+- Do not fetch the branch diff or run review skills in triage/proposal mode.
+- If a candidate has an unchanged `headSha`, defer the Jira acceptance-criteria freshness check until John selects it.
+
+### 10. Execute selected full reviews
+
+For each explicitly selected review, refresh readiness and Jira context first. Continue only when the review is new or `headSha` or Jira acceptance criteria changed:
 
 - Jira: Atlassian `getJiraIssue`, using `context-staleness.md`.
 - Confluence and `/Users/jrodger/Github/planning` when the ticket context is thin.
@@ -112,21 +122,22 @@ For a full review that is new or whose `headSha` or Jira acceptance criteria cha
 
 When nothing new changed, refresh the Readiness section of the existing cluster note.
 
-### 10. Finish
+### 11. Finish
 
-Update INDEX links. Lead the chat summary with nudges posted on GitHub, then senior mentions posted on GitHub, deferred i18n, escalations and spot-checks, then ready / blocked / very stale counts and the paths written.
+Update INDEX links. In proposal mode, lead with proposed nudges, proposed senior mentions, and proposed full reviews. In execution mode, lead with actions actually completed and list any selected actions skipped after revalidation. Then report deferred i18n, watch signals, ready / blocked / very stale counts, and paths written.
 
 ## Initial / triage-only runs
 
-If John asks for a first pass or to close stale PRs, prioritize readiness, nudges, senior tags, and staleness. Deep-review only non-stale full-depth PRs, confirmed escalations, and due spot-checks. Never auto-close PRs.
+If John asks for a first pass or to close stale PRs, prioritize readiness, proposed nudges, proposed senior tags, and staleness. Propose non-stale full-depth PRs, confirmed escalations, and due spot-checks for review. Never auto-close PRs.
 
 ## Outputs
 
-- Chat summary, nudges first
+- Chat summary, proposed actions first
 - `pr-reviews/YYYY-MM-DD/INDEX.md`
 - `pr-reviews/YYYY-MM-DD/readiness.md`
-- Cluster markdown for full reviews
+- Cluster markdown only for explicitly selected full reviews
 - `pr-reviews/state/prs/*.json`
 - Optional context under `pr-reviews/context/`
-- A GitHub nudge comment when `strict-mode.md` matches
-- A GitHub senior mention when `senior-tag.md` matches
+- Proposed GitHub nudge comments; post only when explicitly selected
+- Proposed GitHub senior mentions; post only when explicitly selected
+- Proposed full-review list; review only when explicitly selected

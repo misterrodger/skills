@@ -8,7 +8,7 @@
 
 A mixed PR stays in scope. Size and hot-path checks already ignore locale files (`files.nonI18nCount`, `files.nonI18nLines`, `files.hotPaths`).
 
-An i18n-only PR from a triage author that is ready to merge still gets the senior mention on the GitHub PR in `senior-tag.md`, then stops.
+An i18n-only PR from a triage author that is ready to merge still gets a proposed senior mention under `senior-tag.md`, then stops.
 
 ## Script reasons
 
@@ -40,7 +40,7 @@ When a triage PR is recommended, skim only:
 - `commitMessages`
 - `bugbot.excerpt`
 
-Do not run `gh pr diff` during the skim. Recommend a full review when the skim still shows a material contract, auth, migration, or unresolved-looking comment. Otherwise mark the PR `watch` and leave the previous review in place.
+Do not run `gh pr diff` during the skim. Add a proposed full review when the skim still shows a material contract, auth, migration, or unresolved-looking comment. Otherwise mark the PR `watch` and leave the previous review in place.
 
 Drafts are not skimmed or fully reviewed unless John asks.
 
@@ -53,6 +53,6 @@ For each triage author, at most `maxSpotChecksPerAuthorPerRun` (1) quiet PR per 
 - no escalation reason and not `watch` from a skim this run
 - no `lastDeepReviewAt` or `lastSpotCheckAt` within `spotCheckIntervalDays` (7)
 
-Prefer the PR closest to merge: CI green, then mergeable, then oldest. Run a full review and label the cluster note as a spot-check. Set `lastSpotCheckAt` and `lastSpotCheckSha`.
+Prefer the PR closest to merge: CI green, then mergeable, then oldest. Propose a full review labeled spot-check; do not read the diff yet. If John explicitly selects it, rerun readiness, perform the full review, label the cluster note as a spot-check, and then set `lastSpotCheckAt` and `lastSpotCheckSha`.
 
 Triage authors are Marcos Aguilera, Chad Lott, Vladimir Koshcheyev, Juan David Varela, Francisco de Freitas, and Edwar Figueroa.

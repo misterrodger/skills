@@ -6,16 +6,16 @@ Default daily pass covers every author in `team.json`. Depth depends on `reviewD
 
 | Depth | Who | What a default run does |
 |-------|-----|-------------------------|
-| `full` | Pod 19 seniors, Jonathan Harrison | Readiness, Jira context, and a deep cluster review when `headSha` or acceptance criteria changed |
-| `triage` | Other Pod 19 developers, all of Pod 15 | Open-PR listing plus basic readiness. No diff, no review-skill stack, no cluster file |
+| `full` | Pod 19 seniors, Pod 15 seniors, Jonathan Harrison | Readiness and a proposed deep review when `headSha` changed or no prior review exists; acceptance-criteria freshness is checked if selected |
+| `triage` | Other Pod 19 and Pod 15 developers | Open-PR listing plus basic readiness. No diff, no review-skill stack, no cluster file |
 
-Pod 15 stays on triage even though Isis Salamanca is a senior. She is the strong senior on a lower-priority pod. Promote a Pod 15 PR to `full` only when the user asks, or when a triage card shows a principal-level risk (see Escalation).
+Pod 15 seniors Isis Salamanca and Sulakshana Sawsarikar receive full-depth proposals. Sulakshana's authored PRs are included only when their repository matches her `repoScope`; her reviews count as senior approvals across Pod 15 regardless of repository. Propose other Pod 15 PRs for full review only when a triage card shows a principal-level risk (see Escalation). Review them when the user explicitly asks.
 
 ## Summary order
 
 1. Pod 19 — full reviews, then triage cards
 2. Peer — Jonathan, full reviews
-3. Pod 15 — triage cards
+3. Pod 15 — senior full-depth proposals, then triage cards
 
 Within a pod, list seniors before other developers, then order PRs by bucket: ready, blocked, stale watch, very stale.
 
@@ -35,9 +35,9 @@ One row or short block per open PR. Include:
 
 Do not summarize the diff. Do not fetch Jira unless a key is already obvious and a one-line status helps the listing.
 
-## Escalation (still triage unless the user asks for a review)
+## Escalation proposals
 
-Call these out at the top of the chat summary. Do not deep-review them on a default run.
+Call these out in the proposal queue. Do not deep-review them on a default run.
 
 - Very stale
 - Merge conflicts
@@ -49,13 +49,13 @@ Call these out at the top of the chat summary. Do not deep-review them on a defa
 
 | User says | Effect |
 |-----------|--------|
-| Review / full review \<name\> | `full` for that author this run, even if their default is `triage` |
-| Review / full review Pod 15 (or Pod 19) | `full` for every author in that pod this run |
+| Review / full review \<name or PR\> | Explicitly authorize full review for that selected scope after revalidation |
+| Review / full review Pod 15 (or Pod 19) | Explicitly authorize eligible full reviews for every author in that pod after revalidation |
 | Only / just \<name or pod\> | Limit the run to those authors |
-| Triage only / listing only | No deep reviews; triage cards for everyone included |
+| Triage only / listing only | Proposal mode; no GitHub comments or deep reviews |
 | Extra names with no “only” | Additive, as in author resolution |
 
-“Review PRs from Marcos” means a full review of Marcos for that run.
+“Review PRs from Marcos” is explicit authorization to full-review Marcos's eligible PRs. A plain daily pass that lists Marcos only proposes reviews.
 
 ## What full review is for
 

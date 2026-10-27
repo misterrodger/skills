@@ -30,7 +30,7 @@ Bugbot's risk words are stored on `bugbot`. They are one escalation input. See `
 
 Count `APPROVED` reviews from users **≠ PR author**. `CHANGES_REQUESTED` blocks “ready” even if another approval exists.
 
-Org standard (CA §13) may require **2** approvals + CODEOWNER. Note in INDEX when only one approval exists against that bar. GitHub nudge comments are the short labels in `strict-mode.md`. Senior mentions are a separate GitHub comment in `senior-tag.md`.
+Org standard (CA §13) may require **2** approvals + CODEOWNER. Note in INDEX when only one approval exists against that bar. GitHub nudge comments are proposed using the short labels in `strict-mode.md`. Senior mentions are a separate proposed GitHub comment in `senior-tag.md`. Neither is posted without explicit approval.
 
 ## Ready for your review (INDEX bucket)
 
@@ -43,7 +43,7 @@ All of:
 - ≥1 non-author approval
 - not very stale
 
-Resolved threads can still be present. List `check resolved` beside the row when `prematureResolve` is true. A triage PR that is green and unblocked is not this bucket when no senior on its pod has approved it. If `principal.login` is also absent from `approvals.logins`, follow `senior-tag.md`. If `principal.login` is present, do not mention the pod seniors.
+Resolved threads can still be present. List `check resolved` beside the row when `prematureResolve` is true. A triage PR that is green and unblocked is not this bucket when no senior on its pod has approved it. If `principal.login` is also absent from `approvals.logins`, add the comment to **Proposed senior mentions** under `senior-tag.md`. If `principal.login` is present, do not propose the mention.
 
 ## Blocked
 

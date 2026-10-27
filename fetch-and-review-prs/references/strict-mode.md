@@ -1,6 +1,6 @@
-# Nudges on the GitHub PR
+# Proposed nudges and approved posting
 
-Every run posts nudge labels on the GitHub PR. Do not leave them as a draft for later approval. Do not put them on the Jira ticket.
+Every triage run reports proposed nudge labels but does not post them. Post only when John explicitly approves selected nudges. Do not put them on the Jira ticket.
 
 ## Labels
 
@@ -13,26 +13,28 @@ Use only these, comma-separated, in this order:
 - `changes requested`
 - `stale` — open ≥ `staleOpenDays` or quiet ≥ `staleUpdateDays`
 
-A missing approval is not a label. When a triage PR is ready, no pod senior has approved it, and `principal.login` has not approved it, `senior-tag.md` mentions those seniors on the PR.
+A missing approval is not a label. When a triage PR is ready, no pod senior has approved it, and `principal.login` has not approved it, `senior-tag.md` proposes a separate senior mention.
 
 `scripts/pr-readiness.sh` puts the matching labels on `nudges`. Drop nudges for drafts and for `files.i18nOnly` PRs. `check resolved` is not a GitHub label. It stays in the local summary when `reviewThreads.prematureResolve` is true.
 
 Posted body is the labels only, for example `red pipeline, unresolved comments`.
 
-## Where they appear
+## Proposal output
 
-Lead the chat summary with **Nudges**. Write the same table in the day's `readiness.md` and `INDEX.md`: author, PR, labels, and whether the comment was posted or skipped by cooldown.
+Lead the chat summary with **Proposed nudges**. Write the same table in the day's `readiness.md` and `INDEX.md`: author, PR, labels, and status (`awaiting approval`, `posted`, or the revalidation/cooldown skip reason).
 
-## Posting
+## Approved posting
 
-Post on every run, including a normal `/fetch-and-review-prs` pass. `strict-nudge`, “make it strict”, and “strict mode” mean the same post. They are not a separate approval step.
+`strict-nudge`, “make it strict”, and “strict mode” request proposals unless the same request explicitly says to post. A follow-up such as “post all proposed nudges” or “post the nudge on OWNER/REPO#123” authorizes only that scope.
+
+Before posting, rerun `scripts/pr-readiness.sh` for each selected PR. Use the current labels, and skip the action if it is now a draft, i18n-only, closed, or has no nudge labels.
 
 ```bash
 gh pr comment NUMBER --repo OWNER/REPO --body "red pipeline, unresolved comments"
 ```
 
-Skip a PR whose nudge fingerprint `(labels)` is unchanged and `lastStrictNudgeAt` is within `strictNudgeCooldownHours`. After a post, set `lastStrictNudgeAt` and store the label fingerprint.
+Skip a PR whose current nudge fingerprint `(labels)` is unchanged and `lastStrictNudgeAt` is within `strictNudgeCooldownHours`. Update `lastStrictNudgeAt` and the label fingerprint only after a successful post; a proposal does not update either field.
 
 Template: `/Users/jrodger/Github/pr-reviews/templates/strict-nudge-comment.md`
 
-Senior mentions are a different GitHub comment on the same PR. Follow `senior-tag.md`.
+Senior mentions require separate approval even when the same PR has a proposed nudge. Follow `senior-tag.md`.

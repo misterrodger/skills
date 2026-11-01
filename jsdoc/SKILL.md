@@ -19,7 +19,8 @@ See the typescript-type-safety skill for other general type practices. Represent
 - Libs using .d.ts should keep the JSDoc types and comments fully in the .d.ts file, don’t duplicate in .js file.
 - Preferably migrate hand-written types in .d.ts to zod-contracts when possible.
 - Keep types simple. Derive them from a Zod schema or a simple type definition. Avoid generics, overloads, and similar machinery. Prefer a simpler pattern, even if less concise.
-- Type utils like `Pick`, `Omit`, and the rest are a code smell. Not necessarily wrong, but double-check. They may unintentionally weaken the types or lead to drift and errors. Prefer instead to update the type source of truth (Zod or other type definition at the source) rather than modifying it downstream in another module.
+- Type utils like `Pick`, `Omit`, `Partial`, and the rest are a code smell. Not necessarily wrong, but double-check. They may unintentionally weaken the types or lead to drift and errors. Prefer composition over mutation: compose schemas at the source in `zod-contracts` (prefer `.extend`) rather than reshaping a type downstream in another module. The sanctioned exception is a test-data builder's `@param {Partial<Type>} [overrides]` over a `@satisfies`-checked base.
+- For a migration of an existing slice to Zod-first contracts, use the `zod-migration` skill.
 - Put `@import` at the top of the `.js` file only, the way a TypeScript file imports types. Use `@type` to attach an imported type. Do not restate a signature the declaration already owns.
 - `/** @type {const} */` is `as const`. Pair it with `/** @satisfies {MyType} */` when a constant or fixture must match a type without widening.
 - Changed files must be inside the active `tsconfig.json` `include`. Editor diagnostics are not the CI check. Do not widen that island to type an out-of-scope dependency. ESLint `strictTypeChecked` does not replace `tsc --noEmit`.

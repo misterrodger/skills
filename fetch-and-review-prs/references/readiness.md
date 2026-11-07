@@ -53,6 +53,10 @@ Any of: CI red/pending, unresolved threads > 0, zero non-author approvals, merge
 
 `flaggedOrApproved` true (GitHub label `flagged` or `approved`) takes a PR out of every other bucket and signal — no nudge, no senior mention, no escalation/skim/spot-check, no full review. List it once in the day's Flagged/Approved section instead. See `flagged-approved.md`.
 
+## Approved by you (out of the action queues)
+
+`principalApproved` true means `principal.login` still has an `APPROVED` review. That PR is omitted from Ready, Blocked, Stale watch, Very stale, nudges, senior mentions, escalation, spot-checks, and proposed full reviews. List it once under **Approved by you**. A dismissed approval does not set this flag. See `principal-approved.md`. Flagged/approved still takes precedence when both match.
+
 ## Very stale / stale watch
 
 From `references/team.json` thresholds (`veryStaleOpenDays`, `staleOpenDays`, `staleUpdateDays`).

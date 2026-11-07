@@ -14,7 +14,7 @@ Team PR triage + deep review into `~/Github/pr-reviews/`.
 
 | Group | Full-depth proposals | Default triage |
 |-------|----------------------|----------------|
-| Pod 19 — Sales and Quoting, and Pricing (primary) | Fabian Martinez, Sebastian Vasquez, Juan Pablo Betancourt, Andres Uribe | Marcos Aguilera, Chad Lott, Vladimir Koshcheyev |
+| Pod 19 — Sales and Quoting, and Pricing (primary) | Fabian Martinez, Sebastian Vasquez, Juan Pablo Betancourt, Andres Uribe | Marcos Aguilera |
 | Pod 15 — Scale Ticketing (secondary) | Isis Salamanca; Sulakshana Sawsarikar (authored PRs scoped to bulk-materials-owned repos) | Juan David Varela, Francisco de Freitas, Edwar Figueroa |
 | Peer | Jonathan Harrison | — |
 
@@ -25,6 +25,8 @@ Triage PRs get readiness, proposed short nudge labels, and cheap file, comment, 
 A triage PR that is green, has no approval from a senior on its pod, and has no approval from `principal.login` gets a proposed GitHub comment mentioning those seniors. Skip that proposal when the principal has already approved. Nudge labels and senior mentions are posted only after explicit approval, never on the Jira ticket.
 
 A PR carrying the GitHub label `flagged` or `approved` (either or both) is skipped entirely — no nudge, no senior mention, no skim/escalation/spot-check, no full review — and is only listed in a dedicated Flagged/Approved section.
+
+A PR John has already approved, while that approval is still `APPROVED`, is also skipped entirely and listed once under Approved by you. A dismissed approval puts the PR back into the normal queues.
 
 Sulakshana's authored PRs are listed only from `cds-bulk-materials-service`, `cds-bulk-materials-exp`, `cds-bm-yard`, and `connex-asphalt-node-v4`. Her approvals satisfy the Pod 15 senior gate in every repository.
 
@@ -42,6 +44,7 @@ Output sections are reported with **Proposed full reviews first**, then proposed
 | Proposed nudge list | Every run, when a PR has nudge labels |
 | Proposed senior mentions | When a ready triage PR has no senior or principal approval |
 | Flagged/Approved list | When a PR carries the GitHub label `flagged` or `approved`; informational only |
+| Approved by you | When `principal.login` still has an `APPROVED` review; informational only. Dismissed approvals are reported again |
 | GitHub comments / deep reviews | Only after explicit selection |
 
 ## Related skills

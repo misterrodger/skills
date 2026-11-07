@@ -67,4 +67,4 @@ Each app repo has one `tsconfig.json` with `allowJs`, `checkJs`, `noEmit` and th
 | Route discovery | `findApiResources` reads every `api-docs.js`. Keep those files, for discovery fields only |
 | Zod document | `backend/v4/schemas/openapi-document.js` calls `createDocument` from `zod-openapi` (pattern: `cds-waste-compliance-service`) |
 | Validate and publish a supplied document | `connex-api-node-v4/api-docs/openapi3/api-docs/validate-api-doc` and `publish-api-doc` (pattern: waste-compliance `scripts/`) |
-| Existing doc test | `cds-waste-compliance-service/backend/tests/openapi-spec.test.js`. It hard-codes its operation map, whereas the drift test in stage 7 discovers operations by glob |
+| Existing doc test | `cds-waste-compliance-service/backend/tests/openapi-spec.test.js`. It hard-codes its operation map, whereas the drift test in stage 8 discovers operations by glob |

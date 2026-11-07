@@ -1,8 +1,8 @@
-# Stage 7: OpenAPI
+# Stage 8: OpenAPI
 
 Replace the hand-written JSON Schema and Swagger for the slice with a minimal, Zod-first `zod-openapi` `createDocument`, and keep structural parity with the legacy document.
 
-Read [checklist-openapi.md](checklist-openapi.md), all of it, [checklist-process.md](checklist-process.md), section "Stage 5-7", and [stack-map.md](stack-map.md), section "OpenAPI pieces".
+Read [checklist-openapi.md](checklist-openapi.md), all of it, [checklist-process.md](checklist-process.md), section "Stage 5-8", and [stack-map.md](stack-map.md), section "OpenAPI pieces".
 
 ## Steps
 

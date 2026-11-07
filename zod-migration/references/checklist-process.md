@@ -80,11 +80,11 @@ Quotes and sources: ~/Github/planning/zod-migration-skill/FEEDBACK-PROCESS.md
 - [ ] **P76** Mark unresolved domain questions for colleagues, out-of-scope validation work, and types added locally that belong upstream with short code comments or TODOs, not guesses or implementations.
 - [ ] **P75** When a transitional rollout technique is adopted (for example loose parsing of partial canonical read schemas), record in the zod-schema docs when to use it elsewhere and that it is removed later.
 
-## Stage 5-7: review, tests, OpenAPI
+## Stage 5-8: type rigor, review, tests, OpenAPI
 
 - [ ] **P28** ASK: before removing validators or defensive code, report the realistic risk of removing each one and list other relaxed types or guards on the branch. A question is not an instruction to delete; keep guards that add value.
 - [ ] **P43** Production type-check stays at 0 errors and existing tests keep passing. A pass scoped to test-file type errors changes only fixtures, mocks, builders and assertions without weakening types; report needed upstream fixes instead.
-- [ ] **P3 (again, at stage 7)** Regenerate the OpenAPI document after the swap and report any differences from the stage 7 baseline. There should be none, or only descriptive metadata.
+- [ ] **P3 (again, at stage 8)** Regenerate the OpenAPI document after the swap and report any differences from the stage 8 baseline. There should be none, or only descriptive metadata.
 - [ ] **P63** Full review is the default. When John says he wants a PR closed quickly, review for correctness only; don't block on duplicated code or missing JSDoc types.
 
 ## Handoff and PRs

@@ -16,7 +16,7 @@ Quotes and sources: ~/Github/planning/zod-migration-skill/FEEDBACK-SCHEMAS-AND-T
 - [ ] **S8** -service, -exp (BFF and frontend) and shared UI libraries import the same zod-contracts schemas, types and constants; no parallel handwritten copies unless a stated tradeoff justifies one.
 - [ ] **S9** The plan names concrete schemas, types and constants in consumer repos to move into utils.
 - [ ] **S10** Everything placed in utils is used by more than one consumer. UI/editor-only types stay in the UI library, with label maps keyed by shared codes from utils.
-- [ ] **S11** A shared-worthy type added locally because it is not yet in utils carries a `TODO` saying it should move to connex-utils.
+- [ ] **S11** A shared-worthy type is moved to connex-utils (or -dao) during the slice, not left locally with a `TODO`. See S144 for the agreed exceptions.
 - [ ] **S12** Boundary and type-helper files sit alongside production code, not under `test/boundary`. ASK: before a large relocation refactor; recommend whether it serves growing the island step by step.
 - [ ] **S13** No JSDoc-only `types.js` files and no new types file for a small change. Add to the existing types file or `.d.ts`; export from the root index only if consumers need it.
 - [ ] **S14** App repos add no facade or barrel `.d.ts` (e.g. `connex-dao-boundaries.d.ts`, `*-request.types.d.ts`). Import directly from domain subpaths. A narrow same-basename `.d.ts` beside legacy JS for island isolation is allowed.
@@ -27,7 +27,7 @@ Quotes and sources: ~/Github/planning/zod-migration-skill/FEEDBACK-SCHEMAS-AND-T
 
 ## 2. Composition and type utilities
 
-- [ ] **S19** No `Pick`/`Omit`/`Partial` reshaping contract types in app code. Compose subsets in zod-contracts, preferring `.extend`; schema-level `.pick`/`.omit`/`.partial` are fine. Only sanctioned `Partial`: a test builder's `overrides` parameter.
+- [ ] **S19** No `Pick`/`Omit`/`Partial` reshaping contract types in app code, and no schema-level `.pick`/`.omit`/`.partial` in zod-contracts. Compose with `.extend` from a smaller base schema. Only sanctioned `Partial`: a test builder's `overrides` parameter.
 - [ ] **S20** Domain variants of common objects are built from the `_common` schema, adding only fields that genuinely differ.
 - [ ] **S21** Near-identical record variants share one schema and endpoint with a discriminator field; region- or jurisdiction-dependent shapes are discriminated unions with one Zod schema per variant.
 - [ ] **S22** Existing schemas, endpoints and DAO entries are reused or extended rather than adding near-duplicates.
@@ -167,3 +167,16 @@ Quotes and sources: ~/Github/planning/zod-migration-skill/FEEDBACK-SCHEMAS-AND-T
 - [ ] **S132** Each change has a readable main control flow; helpers are real abstractions, not arbitrary chunks.
 - [ ] **S133** Near-duplicate builders, loops or files are merged, or given distinct names if they genuinely differ.
 - [ ] **S134** Where those lint rules apply, no `!` non-null assertions and no always-true conditionals.
+
+## 12. Type rigor (stage 5)
+
+- [ ] **S135** Every optional field is justified by evidence (JSON schema `required`, DAO defaults, mappers, stored data). Fields every writer sets are required.
+- [ ] **S136** Co-varying optional fields (a `oneOf`, mapper branches, groups always set together) become a `z.discriminatedUnion`, or a `z.union` of strict objects, built from a shared base with `.extend`. On legacy objects, ask and land it in its own commit.
+- [ ] **S137** Stored/read schemas mark fields the DB can hold as `null` as `.nullable()`/`.nullish()`, not `.optional()`. Where a runtime parse exists, the contract coerces them to `undefined` (`.nullish().transform(value => value ?? undefined)`), so app code receives `undefined` only.
+- [ ] **S138** No `.refine` or `.superRefine` without the user's approval. Cross-field logic stays in application code; split schemas instead.
+- [ ] **S139** No `?? null` and no new `| null` in application code. Under `noUncheckedIndexedAccess`, model the absent case as `undefined`: destructure (`const [latest] = sorted;`), let the return type be `T | undefined`, and make callers handle it or fail fast. Never `!`.
+- [ ] **S140** No `any`, `object`, `Record<string, any>`, `[key: string]: unknown` or untyped `new Map()`/`new Set()` remains without a ledger row and outcome.
+- [ ] **S141** A `.d.ts` that disagrees with runtime (e.g. declares `object` but resolves an array) is fixed in `-dao` in this stage, not cast locally.
+- [ ] **S142** A type import that collides with a runtime `require` is aliased (`Product as ProductRecord` beside the `Product` DAO).
+- [ ] **S143** A `@returns` or `@param` sits in the JSDoc block directly above its declaration; stacked blocks are merged, because only the nearest one is checked.
+- [ ] **S144** Local app typedefs exist only after the user agrees the type has no upstream home in this slice: fields the code reads, no index signature, defined once and shared with `@import`.

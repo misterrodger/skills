@@ -61,6 +61,7 @@ query($owner:String!,$name:String!,$number:Int!) {
 
 threads_nodes="$(printf '%s' "$threads_json" | jq -c '.data.repository.pullRequest.reviewThreads.nodes // []')"
 thresholds="$(jq -c '.thresholds' "$team_json")"
+principal_login="$(jq -r '.principal.login // ""' "$team_json")"
 
 jq -n \
   --argjson pr "$pr_json" \
@@ -69,6 +70,7 @@ jq -n \
   --arg ciDetail "$ci_detail" \
   --argjson threads "$threads_nodes" \
   --argjson thresholds "$thresholds" \
+  --arg principalLogin "$principal_login" \
   --arg fetchedAt "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
   --argjson now "$(date -u +%s)" \
   '
@@ -143,6 +145,7 @@ jq -n \
       logins: [latest[] | select(.state == "APPROVED" and .author.login != $author) | .author.login] | unique,
       changesRequested: [latest[] | select(.state == "CHANGES_REQUESTED")] | length
     } as $approvals
+  | (($approvals.logins | index($principalLogin)) != null) as $principalApproved
   | ([latest[] | select((.author.login // "") | is_bot)] | last) as $bugbotReview
   | (if $bugbotReview == null then "none"
      elif (($bugbotReview.body // "") | test("high([ -])risk|risk[^.]{0,40}high"; "i")) then "high"
@@ -189,6 +192,7 @@ jq -n \
       changedFiles: $pr.changedFiles,
       labels: $labelNames,
       flaggedOrApproved: $flaggedOrApproved,
+      principalApproved: $principalApproved,
       openDays: $openDays,
       quietDays: $quietDays,
       ci: { status: $ciStatus, detail: $ciDetail },
@@ -222,10 +226,10 @@ jq -n \
       },
       commitCount: (($pr.commits // []) | length),
       commitMessages: [($pr.commits // [])[].messageHeadline] | .[0:12],
-      nudges: (if $flaggedOrApproved then [] else $nudges end),
+      nudges: (if ($flaggedOrApproved or $principalApproved) then [] else $nudges end),
       escalation: {
-        recommend: (if $flaggedOrApproved then false else (($reasons | length) > 0) end),
-        reasons: (if $flaggedOrApproved then [] else $reasons end)
+        recommend: (if ($flaggedOrApproved or $principalApproved) then false else (($reasons | length) > 0) end),
+        reasons: (if ($flaggedOrApproved or $principalApproved) then [] else $reasons end)
       },
       fetchedAt: $fetchedAt
     }

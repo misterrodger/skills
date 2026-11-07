@@ -75,22 +75,6 @@
       "reviewDepth": "triage"
     },
     {
-      "name": "Chad Lott",
-      "login": "CLott_cmd",
-      "aliases": ["chad", "chad lott", "clott", "clott_cmd", "CLott_cmd"],
-      "pod": "pod-19",
-      "role": "developer",
-      "reviewDepth": "triage"
-    },
-    {
-      "name": "Vladimir Koshcheyev",
-      "login": "vkoshcheyev_cmd",
-      "aliases": ["vladimir", "vladimir koshcheyev", "vlad", "vkoshcheyev_cmd"],
-      "pod": "pod-19",
-      "role": "developer",
-      "reviewDepth": "triage"
-    },
-    {
       "name": "Isis Salamanca",
       "login": "isalamanca_cmd",
       "aliases": ["isis", "isis salamanca", "isalamanca_cmd"],

@@ -22,7 +22,7 @@ Quotes and sources: ~/Github/planning/zod-migration-skill/FEEDBACK-TESTS-AND-FIX
 - [ ] **T9.1** Tests run through the repo's npm scripts (`npm test -- <path>`, `npm run test-individual -- <path>`, full suite `npm run test`), never `npx jest`.
 - [ ] **T9.9** Every test that passed before the change still passes after it; a slice is not done while any previously passing test fails.
 
-## Stage 6: tests and test data
+## Stage 7: tests and test data
 
 ### What not to test (and what to test)
 

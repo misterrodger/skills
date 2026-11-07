@@ -1,8 +1,8 @@
-# Stage 5: Self-review
+# Stage 6: Self-review
 
-This is a separate pass over your own diff, made after implementation and before tests and OpenAPI. Its checklist was compiled from past review feedback, so a finding here is something the user would otherwise flag.
+This is a separate pass over your own diff, made after the stage 5 type-rigor pass and before tests and OpenAPI. Its checklist was compiled from past review feedback, so a finding here is something the user would otherwise flag.
 
-Read [checklist-schemas-and-types.md](checklist-schemas-and-types.md), all of it, and [checklist-process.md](checklist-process.md), section "Stage 5-7".
+Read [checklist-schemas-and-types.md](checklist-schemas-and-types.md), all of it, and [checklist-process.md](checklist-process.md), section "Stage 5-8".
 
 ## Steps
 
@@ -21,10 +21,10 @@ Read [checklist-schemas-and-types.md](checklist-schemas-and-types.md), all of it
    - **log:** a follow-up ticket.
 5. Re-check the strictness ledger. For each non-strict row, list its unmet tighten-triggers. If a trigger has changed, propose tightening.
 6. Batch the "ask the user" findings into one `AskQuestion`.
-7. Fix the "fix now" findings by looping back to stage 3, which then goes through stage 4. Repeat this review on the new diff until a pass produces no fix-now findings.
+7. Fix the "fix now" findings by looping back to stage 3, which then goes through stages 4 and 5. Repeat this review on the new diff until a pass produces no fix-now findings.
 
 ## Gate
 
 - [ ] Every checklist line was checked against the final diff.
 - [ ] Every finding is recorded and resolved as fixed, answered by the user, or logged.
-- [ ] Stage 4's gate still holds after the last loop.
+- [ ] The gates of stages 4 and 5 still hold after the last loop.

@@ -15,8 +15,9 @@ All of:
 - no `approvals.logins` entry is a senior `login` from the author's pod
 - no `approvals.logins` entry is `principal.login` from `team.json`
 - `flaggedOrApproved` is false — a PR labeled `flagged` or `approved` on GitHub never gets a senior mention; see `flagged-approved.md`
+- `principalApproved` is false — a current approval from `principal.login` removes the PR from this comment and from the rest of the action queues; see `principal-approved.md`. A dismissed approval does not match, and the mention can be proposed again when the other gates match
 
-An approval from `principal.login` suppresses the senior mention the same way a pod-senior approval does. Do not ask the pod seniors to review a PR the principal has already approved.
+An approval from `principal.login` suppresses the senior mention the same way a pod-senior approval does. Do not ask the pod seniors to review a PR the principal has already approved, and do not put that PR in the proposed-review or nudge lists.
 
 A Jira key is not required. The comment is on the PR.
 

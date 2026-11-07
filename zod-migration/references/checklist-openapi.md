@@ -1,4 +1,4 @@
-# Checklist: OpenAPI, Swagger, and JSON Schema (stage 7)
+# Checklist: OpenAPI, Swagger, and JSON Schema (stage 8)
 
 Check every line against the plan or diff, and record each finding as fix-now, ask John, or log.
 

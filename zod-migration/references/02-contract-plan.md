@@ -2,7 +2,7 @@
 
 Plan the contracts, DAO types and app changes before editing anything. Every schema in the plan is strict unless the user approves otherwise.
 
-Read [checklist-process.md](checklist-process.md), section "Stage 2". Skim the headings of [checklist-schemas-and-types.md](checklist-schemas-and-types.md) so the plan doesn't set up findings for stage 5.
+Read [checklist-process.md](checklist-process.md), section "Stage 2". Skim the headings of [checklist-schemas-and-types.md](checklist-schemas-and-types.md) so the plan doesn't set up findings for stages 5 and 6.
 
 ## Steps
 

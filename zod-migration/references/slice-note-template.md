@@ -26,6 +26,18 @@ Out of scope, noted for later:
 | --- | --- | --- | --- | --- | --- | --- |
 |  |  | strict / non-strict (why) |  | n/a for strict |  |  |
 
+## Optional fields (stage 5)
+
+| Schema | Field | Modifier | Source evidence | Decision |
+| --- | --- | --- | --- | --- |
+|  |  | optional / nullable / nullish |  | keep / required / union / nullable + coerce to undefined |
+
+## Vague types (stage 5)
+
+| File:line | Current type | Runtime evidence | Fix | Outcome |
+| --- | --- | --- | --- | --- |
+|  |  |  | contract / extend / -dao fix / inference / agreed local typedef / keep (comment) |  |
+
 ## Constants candidates
 
 | Constant | Used in | Recommended home | Decision |
@@ -55,7 +67,7 @@ Out of scope, noted for later:
 
 ## Still legacy next door
 
-## OpenAPI (stage 7)
+## OpenAPI (stage 8)
 
 Baseline file: <path>. Drift test: <path>. Merge function: <path or n/a>.
 ```

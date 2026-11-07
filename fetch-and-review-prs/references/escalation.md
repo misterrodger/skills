@@ -6,6 +6,12 @@
 
 A PR with `flaggedOrApproved` true (GitHub label `flagged` or `approved`) is never skimmed, spot-checked, or escalated; `escalation.recommend`/`reasons` are already zeroed by `scripts/pr-readiness.sh`. Record it in the day's Flagged/Approved section instead. See `flagged-approved.md`.
 
+## Ignore PRs you already approved
+
+A PR with `principalApproved` true is never skimmed, spot-checked, or escalated. The script zeroes `nudges` and `escalation.recommend`/`reasons` the same way. Record it in **Approved by you** and stop. See `principal-approved.md`.
+
+The gate is the latest review from `principal.login` with state `APPROVED`. A `DISMISSED` review is not an approval. That pull request is skimmed, nudged, and proposed again under the normal rules.
+
 ## Ignore i18n volume
 
 `files.i18nOnly` means every changed file is a translation or locale resource. Leave that PR out of full review, spot-check, escalation, and the nudge list, including when a senior wrote it. Record it in the day's deferred-i18n section. See `deferred-senior-triage.md`.
@@ -59,4 +65,4 @@ For each triage author, at most `maxSpotChecksPerAuthorPerRun` (1) quiet PR per 
 
 Prefer the PR closest to merge: CI green, then mergeable, then oldest. Propose a full review labeled spot-check; do not read the diff yet. If John explicitly selects it, rerun readiness, perform the full review, label the cluster note as a spot-check, and then set `lastSpotCheckAt` and `lastSpotCheckSha`.
 
-Triage authors are Marcos Aguilera, Chad Lott, Vladimir Koshcheyev, Juan David Varela, Francisco de Freitas, and Edwar Figueroa.
+Triage authors are Marcos Aguilera, Juan David Varela, Francisco de Freitas, and Edwar Figueroa.

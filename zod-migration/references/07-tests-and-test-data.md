@@ -1,8 +1,8 @@
-# Stage 6: Tests and test data
+# Stage 7: Tests and test data
 
 Make the test data Zod-first, with a small set of shared fixtures and builders checked against the contracts. Tests should catch drift, and they shouldn't restate schemas. This stage can find contract gaps and loop back to stage 3.
 
-Read [checklist-tests-and-fixtures.md](checklist-tests-and-fixtures.md), part "Stage 6", and [checklist-process.md](checklist-process.md), section "Stage 5-7".
+Read [checklist-tests-and-fixtures.md](checklist-tests-and-fixtures.md), part "Stage 7", and [checklist-process.md](checklist-process.md), section "Stage 5-8".
 
 ## Steps
 
@@ -36,7 +36,7 @@ Read [checklist-tests-and-fixtures.md](checklist-tests-and-fixtures.md), part "S
    - Use `jest.mocked(...)`, with mock return values typed so that drift shows.
    - Delete tests that only restate a schema or re-test Zod.
 6. **Type-check the tests.** Add the test and fixture files to the repo's `tsconfig.json` `include`. Fix their type errors in test code, unless the error shows a real contract gap, which goes back to stage 3.
-7. **Self-review.** Go through every line of the stage 6 checklist against the test diff, record the findings in the slice note, and loop until none are left to fix now.
+7. **Self-review.** Go through every line of the stage 7 checklist against the test diff, record the findings in the slice note, and loop until none are left to fix now.
 8. Run the full suites and `type-check` in every repo.
 
 ## Gate
@@ -44,5 +44,5 @@ Read [checklist-tests-and-fixtures.md](checklist-tests-and-fixtures.md), part "S
 - [ ] Shared fixtures and builders are in `zod-contracts/<domain>/fixtures`, and no production entry point imports them.
 - [ ] Drift-catching has been checked in practice on at least one builder and one fixture.
 - [ ] The test files are in `include`, and `type-check` passes.
-- [ ] The stage 6 checklist has been checked, and all findings are resolved or logged.
+- [ ] The stage 7 checklist has been checked, and all findings are resolved or logged.
 - [ ] The full suites pass, including the stage 0 tests.
